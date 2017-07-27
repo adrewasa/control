@@ -1,10 +1,7 @@
 package com.asa.computer;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
-
-import com.asa.computer.control.Control;
-import com.asa.computer.controlled.Controlled;
+import com.asa.computer.transfer.client.Client;
+import com.asa.computer.transfer.client.RequestConstant;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -42,10 +39,22 @@ public class ControlComputer {
 
     public static void main(String[] args) {
 
+        //boolean r = true;
+        //if (r) {
+        //
+        //    //Client s = new Client();
+        //    Server server = new Server();
+        //    server.run();
+        //    return;
+        //}
+
+
         String s;
 
         Options options = new Options();
         options.addOption(ACTION, true, "control/controlled(控制电脑还是被控制电脑)");
+        options.addOption("server", false, "启动服务器");
+        options.addOption("client", true, "发送请求 client=cmd");
         options.addOption("h", "帮助文档");
         Lifecycle life = null;
 
@@ -57,15 +66,24 @@ public class ControlComputer {
                 HelpFormatter f = new HelpFormatter();
                 f.printHelp("使用书名", options);
             } else {
-                if (cl.hasOption(ACTION)) {
-                    s = cl.getOptionValue(ACTION);
-                    if (COMTROL.equalsIgnoreCase(s)) {
-                        life = new Control();
-                    } else {
-                        life = new Controlled();
-                    }
-                } else {
-                    System.out.println("输入正确操作");
+                //if (cl.hasOption(ACTION)) {
+                //    s = cl.getOptionValue(ACTION);
+                //    if (COMTROL.equalsIgnoreCase(s)) {
+                //        life = new Control();
+                //    } else {
+                //        life = new Controlled();
+                //    }
+                //} else {
+                //    System.out.println("输入正确操作");
+                //}
+                if (cl.hasOption("server")) {
+                    System.out.println("start server");
+                    //Server server = new Server();
+                    //server.run();
+                } else if (cl.hasOption("client")) {
+                    System.out.println("start client,cmd=" + cl.getOptionValue("client"));
+                    short cmd = RequestConstant.cmdNameTocmd(cl.getOptionValue("client"));
+                    Client client = new Client(cmd);
                 }
             }
 
