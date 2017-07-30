@@ -100,7 +100,7 @@ public class RequestFactory {
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                IOUtils.closeQuitely(in, out, socket);
+                IOUtils.closeQuietly(in, out, socket);
             }
         }
         return ret;

@@ -1,5 +1,7 @@
 package com.asa.computer.update;
 
+import java.io.File;
+
 /**
  * Created by andrew_asa on 2017/7/23.
  *
@@ -7,4 +9,10 @@ package com.asa.computer.update;
  */
 public class Update {
 
+
+    public static void main(String[] args) {
+
+        File f = new File("~");
+        System.out.println(f.getAbsolutePath());
+    }
 }

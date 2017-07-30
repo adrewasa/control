@@ -36,7 +36,7 @@ public class Server implements Runnable {
             e.printStackTrace();
         }finally {
             System.out.println("关闭服务");
-            IOUtils.closeQuitely(stopServer);
+            IOUtils.closeQuietly(stopServer);
         }
 
     }
@@ -86,7 +86,7 @@ public class Server implements Runnable {
 
     public static void main(String[] args) {
 
-        Server s = new Server();
-        s.run();
+        //Server s = new Server();
+        //s.run();
     }
 }
