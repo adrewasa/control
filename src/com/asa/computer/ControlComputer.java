@@ -2,6 +2,9 @@ package com.asa.computer;
 
 import com.asa.computer.transfer.client.Client;
 import com.asa.computer.transfer.client.RequestConstant;
+import com.asa.computer.transfer.server.Server;
+import com.asa.computer.ui.client.ClientUi;
+import com.asa.computer.ui.server.ServerUi;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -32,7 +35,7 @@ public class ControlComputer {
         Options options = new Options();
         options.addOption(ACTION, true, "control/controlled(控制电脑还是被控制电脑)");
         options.addOption("server", false, "启动服务器");
-        options.addOption("client", true, "发送请求 client=cmd");
+        options.addOption("client", false, "发送请求 client=cmd");
         options.addOption("ui", false, "是否使用桌面环境");
         options.addOption("h", "帮助文档");
         return options;
@@ -67,13 +70,22 @@ public class ControlComputer {
                 f.printHelp("使用说明", options);
             } else {
                 if (cl.hasOption("server")) {
-                    System.out.println("start server");
-                    //Server server = new Server();
-                    //server.run();
+                    if (userUI) {
+                        ServerUi serverUi = new ServerUi();
+                    } else {
+                        System.out.println("background start server");
+                        Server server = new Server();
+                        server.run();
+                    }
                 } else if (cl.hasOption("client")) {
                     System.out.println("start client,cmd=" + cl.getOptionValue("client"));
-                    short cmd = RequestConstant.cmdNameTocmd(cl.getOptionValue("client"));
-                    Client client = new Client(cmd);
+                    if (userUI) {
+                        // 客户端
+                        ClientUi clientUi = new ClientUi();
+                    } else {
+                        short cmd = RequestConstant.cmdNameTocmd(cl.getOptionValue("client"));
+                        Client client = new Client(cmd);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -85,7 +97,6 @@ public class ControlComputer {
 
         ControlComputer cc = new ControlComputer();
         cc.start(args);
-
     }
 
 }

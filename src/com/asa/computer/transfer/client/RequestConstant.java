@@ -26,6 +26,11 @@ public class RequestConstant {
     public static short CMD_SINGOUT = 4;
 
     /**
+     * 更新服务器
+     */
+    public static short CMD_UPDATA_SERVER = 5;
+
+    /**
      * 停止服务器
      */
     public static short CMD_STOPSERVER = 5;

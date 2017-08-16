@@ -1,20 +1,23 @@
 package com.asa.computer.transfer.client;
 
-import com.asa.computer.transfer.Constant;
-import com.asa.utils.applet.ls.Ls;
-import com.asa.utils.applet.ls.LsNode;
-import com.asa.utils.io.IOUtils;
+import com.asa.computer.transfer.client.promise.RequestAction;
+import com.asa.computer.transfer.client.promise.imp.GetFileRequestAction;
+import com.asa.computer.transfer.client.promise.imp.LsRequestAction;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by andrew_asa on 2017/7/26.
  */
 public class RequestFactory {
 
+    /**
+     * 动作容器
+     */
+    private static Map<Short, RequestAction> actionMap = new HashMap<Short, RequestAction>();
+
+    private static boolean isInit = false;
 
     /**
      * 构造一个请求的命令
@@ -23,28 +26,14 @@ public class RequestFactory {
      * @param args 参数
      * @return
      */
-    public static Request getRequst(short cmd, Object... args) {
+    public static Request getRequest(short cmd, Object... args) {
 
-        Request ret = new Request();
-        RequestHeader header = ret.getHeader();
-        RequestBody body = ret.getBody();
-        header.setCmd(cmd);
-
-        if (cmd == RequestConstant.CMD_LS) {
-            // 如果是获取目录,第一个参数为目录的名字,默认为"./"
-            if (args.length > 0) {
-                // 如果有参数则第一个参数就是的路径
-                String dir = (String) args[0];
-                body.append(dir);
-                //
-                header.setBodyLen(body.length());
-            }
-        } else if (cmd == RequestConstant.CMD_GET_FILE) {
-
-        } else if (cmd == RequestConstant.CMD_STOPSERVER) {
-
+        Short key = new Short(cmd);
+        RequestAction action = actionMap.get(key);
+        if (action != null) {
+            return action.getRequest(args);
         }
-        return ret;
+        return null;
     }
 
     /**
@@ -75,34 +64,40 @@ public class RequestFactory {
         return ret;
     }
 
-    public static RequestActionResult actionRequest(Request request) {
+    public static RequestActionResult actionRequest(short cmd, Request request, String ip, int port) {
 
-        RequestActionResult ret = new RequestActionResult(RequestConstant.ACTION_RESULT_SUCCESS);
-        if (request != null) {
-            short cmd = request.getHeader().getCmd();
-            Socket socket = null;
-            InputStream in = null;
-            OutputStream out = null;
-            try {
-                socket = new Socket(Constant.LOCALHOSTADDR, Constant.SERVERPORT);
-                out = socket.getOutputStream();
-                out.write(request.toBytes());
-                if (cmd == RequestConstant.CMD_LS) {
-                    in = socket.getInputStream();
-                    byte[] rev = new byte[Constant.DATABUFLEN];
-                    int revLen = in.read(rev);
-                    LsNode lsNode = new LsNode();
-                    int r = lsNode.parse(rev, 0, revLen);
-                    if (r == 0) {
-                        Ls.printfLsNode(lsNode);
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                IOUtils.closeQuietly(in, out, socket);
+        Short key = new Short(cmd);
+        RequestAction action = actionMap.get(key);
+        return action.actionRequest(cmd, request, ip, port);
+    }
+
+    public static RequestAction getAction(short cmd) {
+
+        return actionMap.get(new Short(cmd));
+    }
+
+    /**
+     * 动作注册
+     *
+     * @param action
+     */
+    public static void registeAction(RequestAction action) {
+
+        if (action != null) {
+            if (!actionMap.containsKey(new Short(action.getCmd()))) {
+                actionMap.put(new Short(action.getCmd()), action);
             }
         }
-        return ret;
+    }
+
+    /**
+     * TODO 需要移到启动项里面
+     */
+    static {
+        if (!isInit) {
+            isInit = true;
+            registeAction(new LsRequestAction());
+            registeAction(new GetFileRequestAction());
+        }
     }
 }

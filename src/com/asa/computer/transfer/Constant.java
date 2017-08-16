@@ -18,5 +18,10 @@ public class Constant {
     /**
      * 数据缓冲区大小
      */
-    public static int DATABUFLEN = 4096;
+    public static int DATABUFLEN = 1024*100;
+
+    /**
+     * 传输基路径
+     */
+    public static String TRANSPORTBASEPATH = "/Users/andrew_asa/Downloads/temp/";
 }

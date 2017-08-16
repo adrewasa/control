@@ -5,6 +5,8 @@ package com.asa.computer.transfer.client;
  */
 public class RequestActionResult {
 
+    Object response;
+
     /**
      * 状态
      */
@@ -38,5 +40,20 @@ public class RequestActionResult {
     public void setMessage(String message) {
 
         this.message = message;
+    }
+
+    public void setResponse(Object response) {
+
+        this.response = response;
+    }
+
+    public Object getResponse() {
+
+        return response;
+    }
+
+    public boolean requestSuccess() {
+
+        return status == RequestConstant.ACTION_RESULT_SUCCESS;
     }
 }

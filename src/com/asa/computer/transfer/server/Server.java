@@ -34,7 +34,7 @@ public class Server implements Runnable {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             System.out.println("关闭服务");
             IOUtils.closeQuietly(stopServer);
         }
@@ -83,10 +83,28 @@ public class Server implements Runnable {
         return true;
     }
 
+    private boolean beforeStop() {
+
+        return true;
+    }
+
+    public void stop() {
+
+        System.out.println("server stop now");
+        beforeStop();
+        stop = true;
+    }
+
+    public void start() {
+
+        System.out.println("server start now");
+        run();
+    }
 
     public static void main(String[] args) {
 
-        //Server s = new Server();
-        //s.run();
+        Server s = new Server();
+        s.run();
     }
+
 }

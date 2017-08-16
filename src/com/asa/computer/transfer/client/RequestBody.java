@@ -11,6 +11,7 @@ public class RequestBody extends BytesBuffer implements Transport {
     @Override
     public int parse(byte[] bytes, int start, int len) {
 
+        append(bytes, start, len);
         return 0;
     }
 
