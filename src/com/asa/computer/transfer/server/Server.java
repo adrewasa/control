@@ -64,12 +64,9 @@ public class Server implements Runnable {
         }
     }
 
-    private void dealWithRequest(Request request, Socket s) throws Exception {
+    private ResponseActionResult dealWithRequest(Request request, Socket s) throws Exception {
 
-        ResponseActionResult r = RequestActionFactory.actionRequest(request, s);
-        if (r.getStatus() == ResponseConstant.ACTION_RESULT_STOP_SERVER) {
-            stop = true;
-        }
+        return RequestActionFactory.actionRequest(this, request, s);
     }
 
 
@@ -88,11 +85,24 @@ public class Server implements Runnable {
         return true;
     }
 
+    /**
+     * 停止服务器
+     */
     public void stop() {
 
         System.out.println("server stop now");
         beforeStop();
         stop = true;
+    }
+
+    /**
+     * 是否已经停止
+     *
+     * @return
+     */
+    public boolean isStop() {
+
+        return stop;
     }
 
     public void start() {

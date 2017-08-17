@@ -6,7 +6,6 @@ import com.asa.computer.transfer.client.RequestActionResult;
 import com.asa.computer.transfer.client.RequestBody;
 import com.asa.computer.transfer.client.RequestConstant;
 import com.asa.computer.transfer.client.RequestHeader;
-import com.asa.computer.transfer.client.promise.RequestAction;
 import com.asa.utils.applet.ls.LsNode;
 import com.asa.utils.io.IOUtils;
 
@@ -19,7 +18,7 @@ import java.net.Socket;
  * Created by andrew_asa on 2017/8/16.
  * ls 服务器目录
  */
-public class LsRequestAction implements RequestAction {
+public class LsRequestAction extends AbstractRequestAction {
 
     @Override
     public short getCmd() {

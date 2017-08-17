@@ -8,6 +8,8 @@ public class ResponseActionResult {
 
     private short status;
 
+    private String msg;
+
     public ResponseActionResult(short status) {
 
         this.status = status;
@@ -21,5 +23,15 @@ public class ResponseActionResult {
     public void setStatus(short status) {
 
         this.status = status;
+    }
+
+    public void setMsg(String msg) {
+
+        this.msg = msg;
+    }
+
+    public String getMsg() {
+
+        return msg;
     }
 }

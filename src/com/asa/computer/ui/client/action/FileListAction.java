@@ -1,12 +1,10 @@
 package com.asa.computer.ui.client.action;
 
-import com.asa.computer.transfer.Constant;
 import com.asa.computer.transfer.client.Client;
 import com.asa.computer.transfer.client.RequestActionResult;
 import com.asa.computer.transfer.client.RequestConstant;
 import com.asa.computer.ui.UIConstant;
 import com.asa.utils.CommonUtil;
-import com.asa.utils.applet.ls.Ls;
 import com.asa.utils.applet.ls.LsConstant;
 import com.asa.utils.applet.ls.LsNode;
 import com.asa.utils.data.StringUtils;
@@ -238,63 +236,5 @@ public class FileListAction implements ActionListener {
         return button;
     }
 
-    public static void main(String[] args) {
 
-        JFrame jFrame = new JFrame();
-        Container contentPane = jFrame.getContentPane();
-
-
-        jFrame.setSize(600, 400);
-        jFrame.setLocation(400, 300);
-        // 设置关闭退出
-        jFrame.setDefaultCloseOperation(jFrame.EXIT_ON_CLOSE);
-
-        JPanel panel = new JPanel();
-        //scrollPane.removeAll();
-        panel.setBackground(Color.white);
-        panel.setLayout(new ChangeLineFlowLayout(ChangeLineFlowLayout.LEFT));
-        //panel.setPreferredSize();
-        JScrollPane scrollPane = new JScrollPane(panel);
-        scrollPane.setBounds(100, 100, 100, 300);
-        //childs = ls.getSimpleLsNode().getChild();
-        Ls ls = new Ls(Constant.TRANSPORTBASEPATH);
-        LsNode lsNode = ls.getSimpleLsNode();
-        for (LsNode node : lsNode.getChild()) {
-            final JButton button = new JButton();
-            button.setText(FilenameUtils.getName(node.getName()));
-            Icon icon;
-            if (node.getType() == LsConstant.LSNODE_TYPE_FILE) {
-                icon = new ImageIcon(UIConstant.ICON_DIR_PATH + "file.jpg");
-            } else {
-                icon = new ImageIcon(UIConstant.ICON_DIR_PATH + "folder.jpg");
-            }
-            button.setIcon(icon);
-            button.setHorizontalTextPosition(SwingConstants.CENTER);
-            button.setVerticalTextPosition(SwingConstants.BOTTOM);
-            //button.setSize(90, 90);
-            button.setSize(UIConstant.FILE_LIST_DISP_WIDTH, UIConstant.FILE_LIST_DISP_HEIGH);
-            button.setPreferredSize(new Dimension(UIConstant.FILE_LIST_DISP_WIDTH, UIConstant.FILE_LIST_DISP_HEIGH));
-            button.setBorderPainted(false);
-            button.addMouseListener(new MouseAdapter() {
-
-                @Override
-                public void mouseClicked(MouseEvent e) {
-
-                    if (e.getClickCount() == 1) {
-                        button.setBorderPainted(true);
-
-                    }
-
-                }
-
-                public void mouseExited(MouseEvent e) {
-
-                    button.setBorderPainted(false);
-                }
-            });
-            panel.add(button);
-        }
-        contentPane.add(scrollPane);
-        jFrame.setVisible(true);
-    }
 }

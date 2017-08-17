@@ -2,76 +2,87 @@ package com.asa.computer.transfer.server;
 
 import com.asa.computer.transfer.Constant;
 import com.asa.computer.transfer.client.Request;
-import com.asa.computer.transfer.client.RequestBody;
-import com.asa.computer.transfer.client.RequestConstant;
 import com.asa.computer.transfer.client.RequestHeader;
-import com.asa.utils.applet.ls.Ls;
-import com.asa.utils.applet.ls.LsNode;
+import com.asa.computer.transfer.server.promise.ResponseAction;
+import com.asa.computer.transfer.server.promise.imp.GetFileResponseAction;
+import com.asa.computer.transfer.server.promise.imp.LsResponseAction;
+import com.asa.computer.transfer.server.promise.imp.StopServerResponseAction;
 
-import java.io.File;
-import java.io.OutputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by andrew_asa on 2017/7/26.
  */
 public class RequestActionFactory {
 
-    public static ResponseActionResult actionRequest(Request request, Socket s) {
+    /**
+     * 响应动作集合
+     */
+    private static Map<Short, ResponseAction> actionMap = new HashMap<Short, ResponseAction>();
 
-        ResponseActionResult result = new ResponseActionResult(ResponseConstant.ACTION_RESULT_SUCCESS);
-        try {
-            RequestHeader header = request.getHeader();
-            RequestBody body = request.getBody();
-            byte[] bodyData = body.toBytes();
-            short requestType = header.getCmd();
-            OutputStream out = s.getOutputStream();
-            // 列出文件列表
-            if (requestType == RequestConstant.CMD_LS) {
-                String path = Constant.TRANSPORTBASEPATH;
-                if (header.getBodyLen() > 0) {
-                    String t = new String(bodyData, 0, header.getBodyLen());
-                    if (basePathCheck(t)) {
-                        path = t;
-                    }
-                }
-                Ls ls = new Ls(path);
-                LsNode lsNode = ls.getSimpleLsNode();
-                byte[] outBytes = lsNode.toBytes();
-                out.write(outBytes);
-            } else if (requestType == RequestConstant.CMD_GET_FILE) {
-                // 获取文件路径
-                if (header.getBodyLen() > 0) {
-                    String filePath = new String(bodyData, 0, header.getBodyLen());
-                    if (basePathCheck(filePath)) {
-                        File f = new File(filePath);
-                        if (f.exists()) {
-                            if (f.isFile()) {
+    private static boolean isInit = false;
 
-                            } else if(f.isDirectory()){
-                                // 压缩文件进行传输
-                            }
-                        } else {
-                            // 文件一般都是存在的。。
-                        }
-                    }
-                }
+    /**
+     * 注册 响应动作
+     *
+     * @param action
+     */
+    public static void regResponseAction(ResponseAction action) {
 
-            } else if (requestType == RequestConstant.CMD_STOPSERVER) {
-                // 停止服务器
-                result.setStatus(ResponseConstant.ACTION_RESULT_STOP_SERVER);
-            } else if (requestType == RequestConstant.CMD_UPDATA_SERVER) {
-                // 更新服务器
-                // TODO 这个命令的安全隐患太大了,需要更了解密码学的时候再进行编写
+        if (action != null) {
+            if (actionMap.get(new Short(action.getCmd())) == null) {
+                actionMap.put(new Short(action.getCmd()), action);
             }
-        } catch (Exception e) {
-
         }
-        return result;
+    }
+
+    public static ResponseAction getResponseAction(Short cmd) {
+
+        return actionMap.get(cmd);
+    }
+
+
+    /**
+     * 获取响应动作
+     *
+     * @param cmd
+     * @return
+     */
+    public static ResponseAction getResponseAction(short cmd) {
+
+        return getResponseAction(new Short(cmd));
+    }
+
+    public static ResponseActionResult actionRequest(Server server, Request request, Socket s) {
+
+        RequestHeader header = request.getHeader();
+        short requestType = header.getCmd();
+        ResponseAction action = getResponseAction(requestType);
+        if (action != null) {
+            return action.actionRequest(server, request, s);
+        } else {
+            ResponseActionResult result = new ResponseActionResult(ResponseConstant.ACTION_RESULT_FAIL);
+            result.setMsg("not fit action:" + requestType);
+            return result;
+        }
     }
 
     private static boolean basePathCheck(String p) {
 
         return p != null && p.startsWith(Constant.TRANSPORTBASEPATH) && !p.contains("..");
+    }
+
+    /**
+     * TODO 需要移到启动项里面
+     */
+    static {
+        if (!isInit) {
+            isInit = true;
+            regResponseAction(new LsResponseAction());
+            regResponseAction(new GetFileResponseAction());
+            regResponseAction(new StopServerResponseAction());
+        }
     }
 }

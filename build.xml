@@ -90,6 +90,12 @@
         </unjar>
         <unjar dest="${classes}" src="${libs}/commons-io-2.5.jar">
         </unjar>
+        <unjar dest="${classes}" src="${libs}/log4j-1.2.17.jar">
+        </unjar>
+        <unjar dest="${classes}" src="${libs}/slf4j-api-1.7.21.jar">
+        </unjar>
+        <unjar dest="${classes}" src="${libs}/slf4j-log4j12-1.7.21.jar">
+        </unjar>
         <!--<copy todir="${classes}/lib">-->
             <!--<fileset dir="${libs}">-->
                 <!--<include name="**/*.jar"/>-->

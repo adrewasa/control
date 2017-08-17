@@ -3,6 +3,7 @@ package com.asa.computer.transfer.client;
 import com.asa.computer.transfer.client.promise.RequestAction;
 import com.asa.computer.transfer.client.promise.imp.GetFileRequestAction;
 import com.asa.computer.transfer.client.promise.imp.LsRequestAction;
+import com.asa.computer.transfer.client.promise.imp.StopServerRequestAction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -81,7 +82,7 @@ public class RequestFactory {
      *
      * @param action
      */
-    public static void registeAction(RequestAction action) {
+    public static void regRequestAction(RequestAction action) {
 
         if (action != null) {
             if (!actionMap.containsKey(new Short(action.getCmd()))) {
@@ -96,8 +97,9 @@ public class RequestFactory {
     static {
         if (!isInit) {
             isInit = true;
-            registeAction(new LsRequestAction());
-            registeAction(new GetFileRequestAction());
+            regRequestAction(new LsRequestAction());
+            regRequestAction(new GetFileRequestAction());
+            regRequestAction(new StopServerRequestAction());
         }
     }
 }

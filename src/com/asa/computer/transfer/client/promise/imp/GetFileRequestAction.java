@@ -5,13 +5,12 @@ import com.asa.computer.transfer.client.RequestActionResult;
 import com.asa.computer.transfer.client.RequestBody;
 import com.asa.computer.transfer.client.RequestConstant;
 import com.asa.computer.transfer.client.RequestHeader;
-import com.asa.computer.transfer.client.promise.RequestAction;
 
 /**
  * Created by andrew_asa on 2017/8/16.
  * 获取文件请求
  */
-public class GetFileRequestAction implements RequestAction {
+public class GetFileRequestAction extends AbstractRequestAction {
 
     @Override
     public short getCmd() {
