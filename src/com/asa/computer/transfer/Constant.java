@@ -24,4 +24,7 @@ public class Constant {
      * 传输基路径
      */
     public static String TRANSPORTBASEPATH = "/Users/andrew_asa/Downloads/temp/";
+
+    public static String TRANSPORTREVEIVEPATH=  "/Users/andrew_asa/Downloads/downloads/";
+
 }

@@ -213,8 +213,7 @@ public class FileListAction implements ActionListener {
                 } else if (witch == MouseEvent.BUTTON2) {
                     System.out.println("middle");
                 } else if (witch == MouseEvent.BUTTON3) {
-                    System.out.println("right");
-                    if (e.isPopupTrigger()) {
+                    if (node.isFile()) {
                         JPopupMenu popupMenu = new JPopupMenu();
                         JMenuItem download = new JMenuItem("下载");
                         popupMenu.add(download);

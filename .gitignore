@@ -41,5 +41,6 @@ cmake-build-debug/**/*
 out/**/**
 *.jar
 lib/**/**
+logs/**/**
 
 

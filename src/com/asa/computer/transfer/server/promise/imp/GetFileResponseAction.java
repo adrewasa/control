@@ -10,6 +10,7 @@ import com.asa.computer.transfer.server.Server;
 import com.asa.computer.transfer.server.promise.imp.data.GetFileResponse;
 import com.asa.utils.data.GeneralUtils;
 import com.asa.utils.io.IOUtils;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.InputStream;
@@ -44,7 +45,7 @@ public class GetFileResponseAction extends AbstractResponseAction {
                 if (header.getBodyLen() > 0) {
                     String t = new String(bodyData, 0, header.getBodyLen());
                     GetFileResponse response = null;
-                    File send;
+                    File send = null;
                     while (true) {
                         if (!basePathCheck(t)) {
                             // 文件没有权限
@@ -77,9 +78,9 @@ public class GetFileResponseAction extends AbstractResponseAction {
                         r.parse(rev, 0, revLen);
                         if (r.startReveive()) {
                             // 已经准备好接收文件了 开始写文件
-
+                            FileUtils.copyFile(send, out);
                         } else {
-
+                            ret.setMsg(r.getDescription());
                         }
                     }
                 } else {
@@ -93,5 +94,4 @@ public class GetFileResponseAction extends AbstractResponseAction {
         }
         return ret;
     }
-
 }

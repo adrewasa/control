@@ -1,5 +1,6 @@
 package com.asa.computer.transfer.client.promise.imp;
 
+import com.asa.computer.transfer.Constant;
 import com.asa.computer.transfer.client.Request;
 import com.asa.computer.transfer.client.RequestActionResult;
 import com.asa.computer.transfer.client.RequestBody;
@@ -8,18 +9,28 @@ import com.asa.computer.transfer.client.RequestHeader;
 import com.asa.computer.transfer.server.promise.imp.data.GetFileResponse;
 import com.asa.utils.data.GeneralUtils;
 import com.asa.utils.io.IOUtils;
+import com.asa.utils.log.LoggerUtils;
+import com.asa.utils.transport.TransportUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Date;
 
 /**
  * Created by andrew_asa on 2017/8/16.
  * 获取文件请求
  */
 public class GetFileRequestAction extends AbstractRequestAction {
+
+    Logger LOGGER = LoggerUtils.getLogger(this.getClass());
+
 
     @Override
     public short getCmd() {
@@ -53,6 +64,7 @@ public class GetFileRequestAction extends AbstractRequestAction {
             Socket socket = null;
             InputStream in = null;
             OutputStream out = null;
+            File file = null;
             try {
                 socket = new Socket(ip, port);
                 out = socket.getOutputStream();
@@ -68,7 +80,25 @@ public class GetFileRequestAction extends AbstractRequestAction {
                     GetFileResponse receive = GetFileResponse.getGetFileResponse(GetFileResponse.RESPONSE_TYPE_START_RECEIVE);
                     out.write(receive.toBytes());
                     out.flush();
-                    //
+                    // 写进行写到临时文件，然后再进行更换名字
+                    String c = FilenameUtils.concat(Constant.TRANSPORTREVEIVEPATH, getRandomName());
+                    FileUtils.forceMkdirParent(new File(c));
+                    file = new File(c);
+                    file.createNewFile();
+                    long startTime = System.currentTimeMillis();
+                    FileUtils.copyInputStreamToFile(in, file);
+                    String rname = new String(request.getBody().toBytes());
+                    rname = FilenameUtils.getName(rname);
+                    File r = new File(FilenameUtils.concat(Constant.TRANSPORTREVEIVEPATH, rname));
+                    if (r.exists()) {
+                        r = new File(FilenameUtils.concat(Constant.TRANSPORTREVEIVEPATH, getRandomName() + rname));
+                    }
+                    file.renameTo(r);
+                    long endTime = System.currentTimeMillis();
+                    long fileLen = r.length();
+                    long fsize = FileUtils.sizeOf(r);
+                    ret.setStatus(RequestConstant.ACTION_RESULT_SUCCESS);
+                    LOGGER.info("size {} kb cost {} second   rate {} mb/s  ", TransportUtils.fileSizeKb(fsize), TransportUtils.costSecond(startTime, endTime), TransportUtils.transportRateMb(startTime, endTime, fsize));
                 } else {
                     ret.setMessage(response.getDescription());
                 }
@@ -77,7 +107,16 @@ public class GetFileRequestAction extends AbstractRequestAction {
             } catch (IOException e) {
                 ret.setMessage("unreachable ip:" + ip + " port:" + port);
             } finally {
+                // 关闭相关资源
                 IOUtils.closeQuietly(in, out, socket);
+                //把临时文件删除了
+                if (file != null) {
+                    try {
+                        file.delete();
+                    } catch (Exception e) {
+
+                    }
+                }
             }
         } else {
             ret.setMessage("error params");
@@ -85,5 +124,16 @@ public class GetFileRequestAction extends AbstractRequestAction {
         return ret;
     }
 
+    /**
+     * 获取随机名字
+     *
+     * @return
+     */
+    private String getRandomName() {
 
+        Date date = new Date();
+        StringBuffer sb = new StringBuffer();
+        sb.append(date.getTime());
+        return sb.toString();
+    }
 }
