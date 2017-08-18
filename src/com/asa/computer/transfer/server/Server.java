@@ -114,7 +114,7 @@ public class Server implements Runnable {
     public static void main(String[] args) {
 
         Server s = new Server();
-        s.run();
+        s.start();
     }
 
 }

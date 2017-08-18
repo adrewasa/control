@@ -4,6 +4,13 @@ import com.asa.computer.transfer.client.Request;
 import com.asa.computer.transfer.client.RequestActionResult;
 import com.asa.computer.transfer.client.RequestConstant;
 import com.asa.computer.transfer.client.RequestHeader;
+import com.asa.utils.io.IOUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * Created by andrew_asa on 2017/8/17.
@@ -30,6 +37,26 @@ public class StopServerRequestAction extends AbstractRequestAction {
     @Override
     public RequestActionResult actionRequest(short cmd, Request request, String ip, int port) {
 
-        return null;
+        RequestActionResult ret = new RequestActionResult(RequestConstant.ACTION_RESULT_FAIL);
+        if (request != null) {
+            Socket socket = null;
+            InputStream in = null;
+            OutputStream out = null;
+            try {
+                socket = new Socket(ip, port);
+                out = socket.getOutputStream();
+                out.write(request.toBytes());
+            } catch (UnknownHostException e) {
+                ret.setMessage("UnknownHost");
+            } catch (IOException e) {
+                ret.setMessage("error in send command");
+            } finally {
+                IOUtils.closeQuietly(in, out, socket);
+            }
+        } else {
+            // 构建请求的时候就出错了
+            ret.setMessage("error in build request");
+        }
+        return ret;
     }
 }

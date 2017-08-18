@@ -56,8 +56,5 @@ public class LsResponseAction extends AbstractResponseAction {
         return ret;
     }
 
-    private boolean basePathCheck(String p) {
 
-        return p != null && p.startsWith(Constant.TRANSPORTBASEPATH) && !p.contains("..");
-    }
 }

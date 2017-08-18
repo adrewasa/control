@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * Created by andrew_asa on 2017/8/16.
@@ -66,9 +67,10 @@ public class LsRequestAction extends AbstractRequestAction {
                     ret.setResponse(lsNode);
                     ret.setStatus(RequestConstant.ACTION_RESULT_SUCCESS);
                 }
+            } catch (UnknownHostException e) {
+                ret.setMessage("UnknownHost");
             } catch (IOException e) {
                 ret.setMessage("error in get lsNode");
-                e.printStackTrace();
             } finally {
                 IOUtils.closeQuietly(in, out, socket);
             }
