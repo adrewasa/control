@@ -11,6 +11,7 @@ import com.asa.computer.transfer.server.Server;
 import com.asa.utils.applet.ls.Ls;
 import com.asa.utils.applet.ls.LsNode;
 import com.asa.utils.data.GeneralUtils;
+import com.asa.utils.log.LoggerUtils;
 
 import java.io.OutputStream;
 import java.net.Socket;
@@ -37,17 +38,19 @@ public class LsResponseAction extends AbstractResponseAction {
                 byte[] bodyData = body.toBytes();
                 OutputStream out = s.getOutputStream();
                 // 列出文件列表
-                String path = Constant.TRANSPORTBASEPATH;
+                String path = Constant.getTransportBasePath();
                 if (header.getBodyLen() > 0) {
-                    String t = new String(bodyData, 0, header.getBodyLen());
+                    String t = new String(bodyData, 0, header.getBodyLen(),"utf-8");
                     if (basePathCheck(t)) {
                         path = t;
                     }
                 }
+                LoggerUtils.getLogger(this.getClass()).info("ls {}",path);
                 Ls ls = new Ls(path);
                 LsNode lsNode = ls.getSimpleLsNode();
                 byte[] outBytes = lsNode.toBytes();
                 out.write(outBytes);
+                out.flush();
                 ret.setStatus(ResponseConstant.ACTION_RESULT_SUCCESS);
             } catch (Exception e) {
                 ret.setMsg("error in write response");

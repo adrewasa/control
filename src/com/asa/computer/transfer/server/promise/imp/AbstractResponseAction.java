@@ -16,6 +16,6 @@ public abstract class AbstractResponseAction implements ResponseAction {
      */
     protected boolean basePathCheck(String p) {
 
-        return p != null && p.startsWith(Constant.TRANSPORTBASEPATH) && !p.contains("..");
+        return p != null && p.startsWith(Constant.getTransportBasePath()) && !p.contains("..");
     }
 }

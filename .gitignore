@@ -42,5 +42,6 @@ out/**/**
 *.jar
 lib/**/**
 logs/**/**
+build.xml
 
 

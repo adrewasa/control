@@ -31,7 +31,7 @@ import java.awt.event.MouseEvent;
 public class ChangeLineFlowLayoutTest {
 
     @Test
-    public void testChangeLineFlowLayout() {
+    public void testChangeLineFlowLayout() throws Exception {
 
         JFrame jFrame = new JFrame();
         Container contentPane = jFrame.getContentPane();
@@ -50,7 +50,7 @@ public class ChangeLineFlowLayoutTest {
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setBounds(100, 100, 100, 300);
         //childs = ls.getSimpleLsNode().getChild();
-        Ls ls = new Ls(Constant.TRANSPORTBASEPATH);
+        Ls ls = new Ls(Constant.getTransportBasePath());
         LsNode lsNode = ls.getSimpleLsNode();
         for (LsNode node : lsNode.getChild()) {
             final JButton button = new JButton();

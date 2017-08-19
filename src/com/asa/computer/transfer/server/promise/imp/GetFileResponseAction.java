@@ -79,6 +79,7 @@ public class GetFileResponseAction extends AbstractResponseAction {
                         if (r.startReveive()) {
                             // 已经准备好接收文件了 开始写文件
                             FileUtils.copyFile(send, out);
+                            out.flush();
                         } else {
                             ret.setMsg(r.getDescription());
                         }

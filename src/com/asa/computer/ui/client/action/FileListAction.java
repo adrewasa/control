@@ -75,24 +75,27 @@ public class FileListAction implements ActionListener {
     }
 
     private List<LsNode> getNodes(String path) {
-
-        RequestActionResult result;
-        if (StringUtils.isNotEmpty(path)) {
-            result = client.actionCmd(RequestConstant.CMD_LS, path);
-        } else {
-            result = client.actionCmd(RequestConstant.CMD_LS);
-        }
-        // 请求成功才做下面的事情
-        if (result.requestSuccess()) {
-            LsNode lsNode = (LsNode) result.getResponse();
-            if (lsNode != null) {
-                currentDir = lsNode.getName();
-                if (StringUtils.isEmpty(path)) {
-                    // 根目录
-                    rootDir = lsNode.getName();
-                }
-                return lsNode.getChild();
+        try {
+            RequestActionResult result;
+            if (StringUtils.isNotEmpty(path)) {
+                result = client.actionCmd(RequestConstant.CMD_LS, path);
+            } else {
+                result = client.actionCmd(RequestConstant.CMD_LS);
             }
+            // 请求成功才做下面的事情
+            if (result.requestSuccess()) {
+                LsNode lsNode = (LsNode) result.getResponse();
+                if (lsNode != null) {
+                    currentDir = lsNode.getName();
+                    if (StringUtils.isEmpty(path)) {
+                        // 根目录
+                        rootDir = lsNode.getName();
+                    }
+                    return lsNode.getChild();
+                }
+            }
+        } catch (Exception e) {
+
         }
         return null;
     }

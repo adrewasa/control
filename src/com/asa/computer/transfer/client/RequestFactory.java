@@ -32,7 +32,11 @@ public class RequestFactory {
         Short key = new Short(cmd);
         RequestAction action = actionMap.get(key);
         if (action != null) {
-            return action.getRequest(args);
+            try {
+                return action.getRequest(args);
+            } catch (Exception e) {
+
+            }
         }
         return null;
     }

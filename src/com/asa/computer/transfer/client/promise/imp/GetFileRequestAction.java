@@ -15,10 +15,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Date;
@@ -39,7 +36,7 @@ public class GetFileRequestAction extends AbstractRequestAction {
     }
 
     @Override
-    public Request getRequest(Object... args) {
+    public Request getRequest(Object... args) throws UnsupportedEncodingException {
 
         // 应该给文件路径
         if (args.length < 1) {
@@ -51,7 +48,7 @@ public class GetFileRequestAction extends AbstractRequestAction {
         header.setCmd(getCmd());
         // 如果有参数则第一个参数就是的路径
         String dir = (String) args[0];
-        body.append(dir);
+        body.append(dir.getBytes("utf-8"));
         header.setBodyLen(body.length());
         return ret;
     }
@@ -81,13 +78,13 @@ public class GetFileRequestAction extends AbstractRequestAction {
                     out.write(receive.toBytes());
                     out.flush();
                     // 写进行写到临时文件，然后再进行更换名字
-                    String c = FilenameUtils.concat(Constant.TRANSPORTREVEIVEPATH, getRandomName());
+                    String c = FilenameUtils.concat(Constant.getTransportReveivePath(), getRandomName());
                     FileUtils.forceMkdirParent(new File(c));
                     file = new File(c);
                     file.createNewFile();
                     long startTime = System.currentTimeMillis();
                     FileUtils.copyInputStreamToFile(in, file);
-                    String rname = new String(request.getBody().toBytes());
+                    String rname = new String(request.getBody().toBytes(),"utf-8");
                     rname = FilenameUtils.getName(rname);
                     File r = new File(FilenameUtils.concat(Constant.TRANSPORTREVEIVEPATH, rname));
                     if (r.exists()) {
