@@ -108,6 +108,11 @@ public class ClientUi {
         networkM.add(scanNet);
         menuBar.add(networkM);
 
+        JMenu settingM = new JMenu("设置");
+        JMenuItem transportSetting = new JMenuItem("传输设置");
+        settingM.add(transportSetting);
+        menuBar.add(settingM);
+
         JMenu helpM = new JMenu("帮助");
         JMenuItem updateI = new JMenuItem("更新服务器");
         updateI.addActionListener(new UpdateServer());
