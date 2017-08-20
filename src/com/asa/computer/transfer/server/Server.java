@@ -4,6 +4,8 @@ import com.asa.computer.transfer.Constant;
 import com.asa.computer.transfer.client.Request;
 import com.asa.computer.transfer.client.RequestFactory;
 import com.asa.utils.io.IOUtils;
+import com.asa.utils.log.LoggerUtils;
+import com.asa.utils.net.IPUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,14 +28,14 @@ public class Server implements Runnable {
 
         ServerSocket stopServer = null;
         try {
-            InetAddress ip = InetAddress.getByName(Constant.LOCALHOSTADDR);
+            InetAddress ip = InetAddress.getByName(IPUtils.getLocalIp());
             stopServer = new ServerSocket(Constant.SERVERPORT, 5, ip);
             while (!stop) {
                 Socket socket = stopServer.accept();
                 initRequest(socket);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LoggerUtils.getLogger().info("error get server sock",e);
         } finally {
             System.out.println("关闭服务");
             IOUtils.closeQuietly(stopServer);
@@ -60,7 +62,7 @@ public class Server implements Runnable {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LoggerUtils.getLogger().info("error init Request",e);
         }
     }
 
