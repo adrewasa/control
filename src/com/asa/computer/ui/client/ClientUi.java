@@ -173,6 +173,7 @@ public class ClientUi {
         if (jFrame != null) {
             jFrame.getContentPane().removeAll();
             jFrame.repaint();
+            jFrame.setTitle("客户端");
         }
     }
 
