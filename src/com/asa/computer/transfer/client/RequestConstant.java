@@ -30,6 +30,8 @@ public class RequestConstant {
      */
     public static short CMD_UPDATA_SERVER = 5;
 
+    public static short CMD_SERVER_START = 6;
+
     /**
      * 停止服务器
      */

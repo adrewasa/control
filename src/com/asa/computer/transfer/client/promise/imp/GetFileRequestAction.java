@@ -105,7 +105,8 @@ public class GetFileRequestAction extends AbstractRequestAction {
                             sr+=step;
                         }
                     }
-                    IOUtils.closeQuietly(out);
+                    output.flush();
+                    IOUtils.closeQuietly(output);
                     //FileUtils.copyInputStreamToFile(in, file);
                     long fsize = FileUtils.sizeOf(file);
                     if (fsize == revFileLen) {
@@ -135,7 +136,7 @@ public class GetFileRequestAction extends AbstractRequestAction {
                 // 关闭相关资源
                 IOUtils.closeQuietly(in, out, socket);
                 //把临时文件删除了
-                if (file != null) {
+                if (file != null && file.exists()) {
                     try {
                         file.delete();
                     } catch (Exception e) {
@@ -161,4 +162,13 @@ public class GetFileRequestAction extends AbstractRequestAction {
         sb.append(date.getTime());
         return sb.toString();
     }
+
+    private class GetFile implements Runnable{
+
+        @Override
+        public void run() {
+
+        }
+    }
+
 }

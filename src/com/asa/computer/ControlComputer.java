@@ -84,7 +84,7 @@ public class ControlComputer {
                         ClientUi clientUi = new ClientUi();
                     } else {
                         short cmd = RequestConstant.cmdNameTocmd(cl.getOptionValue("client"));
-                        Client client = new Client(cmd);
+                        Client client = new Client();
                     }
                 }
             }

@@ -60,7 +60,6 @@ public class Server implements Runnable {
                     }
                 }
             }
-
         } catch (Exception e) {
             LoggerUtils.getLogger().info("error init Request",e);
         }

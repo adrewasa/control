@@ -3,6 +3,8 @@ package com.asa.computer.transfer.client;
 import com.asa.computer.transfer.client.promise.RequestAction;
 import com.asa.computer.transfer.client.promise.imp.GetFileRequestAction;
 import com.asa.computer.transfer.client.promise.imp.LsRequestAction;
+import com.asa.computer.transfer.client.promise.imp.ConnectServerRequestAction;
+import com.asa.computer.transfer.client.promise.imp.ShutdownServerRequestAction;
 import com.asa.computer.transfer.client.promise.imp.StopServerRequestAction;
 
 import java.util.HashMap;
@@ -104,6 +106,8 @@ public class RequestFactory {
             regRequestAction(new LsRequestAction());
             regRequestAction(new GetFileRequestAction());
             regRequestAction(new StopServerRequestAction());
+            regRequestAction(new ConnectServerRequestAction());
+            regRequestAction(new ShutdownServerRequestAction());
         }
     }
 }

@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -94,8 +95,10 @@ public class LsRequestAction extends AbstractRequestAction {
             } catch (UnknownHostException e) {
                 ret.setMessage("UnknownHost");
                 LOGGER.info("UnknownHost ip={},port={}", ip, port);
-            } catch (Exception e) {
-                ret.setMessage("error in get lsNode");
+            } catch (ConnectException e){
+                ret.setMessage("time out connection server");
+            } catch(Exception e) {
+                ret.setMessage(e.getMessage());
             } finally {
                 IOUtils.closeQuietly(in, out, socket);
             }

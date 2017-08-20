@@ -4,6 +4,7 @@ import com.asa.computer.transfer.client.Client;
 import com.asa.computer.transfer.client.RequestConstant;
 import com.asa.computer.ui.client.action.FileListAction;
 import com.asa.computer.ui.client.action.FindServer;
+import com.asa.computer.ui.client.action.ShutdownServerAction;
 import com.asa.computer.ui.client.action.ThemeSettingAction;
 import com.asa.computer.ui.client.action.TransportSettingAction;
 
@@ -15,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -61,7 +63,7 @@ public class ClientUi {
 
         JMenu fileM = new JMenu("文件");
         JMenuItem fileLI = new JMenuItem("文件列表");
-        fileLI.addActionListener(new FileListAction(jFrame));
+        fileLI.addActionListener(new FileListAction(jFrame,this));
         JMenuItem item2 = new JMenuItem("保存");
         JMenuItem item3 = new JMenuItem("另存为");
         JMenuItem exit = new JMenuItem("退出");
@@ -89,7 +91,9 @@ public class ClientUi {
         });
 
         JMenu serverM = new JMenu("服务器");
+        JMenuItem serverInfoI = new JMenuItem("服务器信息");
         JMenuItem stopServerI = new JMenuItem("停止服务器");
+        JMenuItem shutdownServerI = new JMenuItem("服务器关机");
         stopServerI.addActionListener(new ActionListener() {
 
             @Override
@@ -99,18 +103,21 @@ public class ClientUi {
                 client.actionCmd(RequestConstant.CMD_STOPSERVER);
             }
         });
+        shutdownServerI.addActionListener(new ShutdownServerAction(this));
+        serverM.add(serverInfoI);
         serverM.add(stopServerI);
+        serverM.add(shutdownServerI);
         menuBar.add(serverM);
 
         JMenu networkM = new JMenu("网络");
-        JMenuItem findServerI = new JMenuItem("发现服务器");
+        JMenuItem findServerI = new JMenuItem("查找服务器");
         JMenuItem connectServerI = new JMenuItem("断开连接");
         JMenuItem scanNet = new JMenuItem("扫描局域网");
         networkM.add(findServerI);
         networkM.add(connectServerI);
         networkM.add(scanNet);
         menuBar.add(networkM);
-        findServerI.addActionListener(new FindServer(jFrame));
+        findServerI.addActionListener(new FindServer(jFrame, this));
 
         JMenu settingM = new JMenu("设置");
         menuBar.add(settingM);
@@ -118,7 +125,7 @@ public class ClientUi {
         JMenuItem themeSetting = new JMenuItem("主题设置");
         settingM.add(transportSetting);
         settingM.add(themeSetting);
-        transportSetting.addActionListener(new TransportSettingAction(jFrame));
+        transportSetting.addActionListener(new TransportSettingAction(jFrame, this));
         themeSetting.addActionListener(new ThemeSettingAction(jFrame));
 
         JMenu helpM = new JMenu("帮助");
@@ -159,6 +166,24 @@ public class ClientUi {
         public void actionPerformed(ActionEvent e) {
 
         }
+    }
+
+    public void clearContainer() {
+
+        if (jFrame != null) {
+            jFrame.getContentPane().removeAll();
+            jFrame.repaint();
+        }
+    }
+
+    public void addNewContainer(Component component) {
+
+        jFrame.getContentPane().add(component);
+    }
+
+    public JFrame getjFrame() {
+
+        return jFrame;
     }
 
     public static void main(String[] args) {

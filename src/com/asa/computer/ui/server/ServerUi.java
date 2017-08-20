@@ -1,7 +1,7 @@
 package com.asa.computer.ui.server;
 
 import com.asa.computer.transfer.server.Server;
-import com.asa.computer.ui.client.action.FileListAction;
+import com.asa.computer.ui.server.action.ServerTransportSetting;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -23,6 +23,8 @@ public class ServerUi {
     private JFrame jFrame;
 
     private Server server;
+
+    private boolean haveStartServer = false;
 
     public ServerUi() {
 
@@ -54,20 +56,19 @@ public class ServerUi {
 
         JMenu setting = new JMenu("设置");
         JMenuItem transport = new JMenuItem("传输");
-        JMenuItem net = new JMenuItem("网络");
-        transport.addActionListener(new FileListAction(jFrame));
         JMenuItem exit = new JMenuItem("退出");
         menuBar.add(setting);
         setting.add(transport);
         setting.addSeparator();
         setting.add(exit);
+        transport.addActionListener(new ServerTransportSetting(jFrame,this));
         exit.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 Object[] options = {"确定", "取消"};
-                int response = JOptionPane.showOptionDialog(jFrame, "是否真的退出?", "退出", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                int response = JOptionPane.showOptionDialog(jFrame, "是否真的退出服务器?", "退出", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                 if (response == 0) {
                     if (beforeExit()) {
                         System.exit(0);
@@ -93,9 +94,16 @@ public class ServerUi {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (server == null) {
-                    server = new Server();
-                    server.start();
+                if (!haveStartServer) {
+                    haveStartServer = true;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            server = new Server();
+                            server.start();
+                        }
+                    }).start();
                 }
             }
         });
@@ -116,6 +124,7 @@ public class ServerUi {
         if (server != null) {
             server.stop();
             server = null;
+            haveStartServer = false;
         }
     }
 
@@ -129,8 +138,18 @@ public class ServerUi {
         return true;
     }
 
+    public void clearContain() {
+
+        if (jFrame != null) {
+            jFrame.getContentPane().removeAll();
+            jFrame.repaint();
+        }
+    }
+
     public static void main(String[] args) {
 
         ServerUi serverUi = new ServerUi();
     }
+
+
 }

@@ -4,6 +4,7 @@ import com.asa.computer.transfer.client.Client;
 import com.asa.computer.transfer.client.RequestActionResult;
 import com.asa.computer.transfer.client.RequestConstant;
 import com.asa.computer.ui.UIConstant;
+import com.asa.computer.ui.client.ClientUi;
 import com.asa.utils.CommonUtil;
 import com.asa.utils.applet.ls.LsConstant;
 import com.asa.utils.applet.ls.LsNode;
@@ -22,7 +23,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,6 +38,8 @@ public class FileListAction implements ActionListener {
 
     private JFrame jFrame;
 
+    private ClientUi clientUi;
+
     private JPanel panel;
 
     private JScrollPane scrollPane;
@@ -50,33 +52,51 @@ public class FileListAction implements ActionListener {
 
     private String currentDir;
 
+    /**
+     * 当前是否已经在获取文件列表了
+     */
+    private boolean currentLs = false;
+
     public FileListAction() {
 
     }
 
-    public FileListAction(JFrame jFrame) {
+    public FileListAction(JFrame jFrame, ClientUi clientUi) {
 
         this.jFrame = jFrame;
         client = new Client();
+        this.clientUi = clientUi;
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // 每次动作都需要重新构建一遍，因为别的点击会删除contentPane里面的内容
-        panel = new JPanel();
-        scrollPane = new JScrollPane(panel);
-        panel.setBackground(Color.white);
-        panel.setLayout(new ChangeLineFlowLayout(ChangeLineFlowLayout.LEFT));
-        scrollPane.setBounds(100, 100, 100, 300);
-        Container contentPane = jFrame.getContentPane();
-        // 重新进行绘制
-        contentPane.removeAll();
-        contentPane.add(scrollPane);
-        paint(getNodes(null));
+
+        if (currentLs) {
+            return;
+        }
+        currentLs = true;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                // 每次动作都需要重新构建一遍，因为别的点击会删除contentPane里面的内容
+                panel = new JPanel();
+                scrollPane = new JScrollPane(panel);
+                panel.setBackground(Color.white);
+                panel.setLayout(new ChangeLineFlowLayout(ChangeLineFlowLayout.LEFT));
+                scrollPane.setBounds(100, 100, 100, 300);
+                clientUi.clearContainer();
+                clientUi.addNewContainer(scrollPane);
+                paint(getNodes(null));
+                currentLs = false;
+            }
+        }).start();
+
     }
 
     private List<LsNode> getNodes(String path) {
+
         try {
             RequestActionResult result;
             if (StringUtils.isNotEmpty(path)) {
@@ -89,16 +109,18 @@ public class FileListAction implements ActionListener {
                 LsNode lsNode = (LsNode) result.getResponse();
                 if (lsNode != null) {
                     currentDir = lsNode.getName();
-                    LoggerUtils.getLogger(this.getClass()).info("success ls {}",currentDir);
+                    LoggerUtils.getLogger(this.getClass()).info("success ls {}", currentDir);
                     if (StringUtils.isEmpty(path)) {
                         // 根目录
                         rootDir = lsNode.getName();
                     }
                     return lsNode.getChild();
                 }
+            } else {
+                LoggerUtils.getLogger(this.getClass()).info(result.getMessage());
             }
         } catch (Exception e) {
-            LoggerUtils.getLogger(this.getClass()).info("error in get ls node",e);
+            LoggerUtils.getLogger(this.getClass()).info("error in get ls node", e);
         }
         return null;
     }
