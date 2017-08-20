@@ -60,8 +60,10 @@ public class GetFileResponseAction extends AbstractResponseAction {
                             ret.setMsg("file not exit");
                             break;
                         }
+                        // 传输文件大小
+                        long sendFileLen = FileUtils.sizeOf(send);
                         // 开始传输
-                        response = GetFileResponse.getGetFileResponse(GetFileResponse.RESPONSE_TYPE_START_TRANSPORT);
+                        response = GetFileResponse.getGetFileResponse(GetFileResponse.RESPONSE_TYPE_START_TRANSPORT, sendFileLen);
                         break;
                     }
                     // 传输会送信息

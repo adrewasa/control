@@ -15,7 +15,12 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Date;
@@ -70,7 +75,7 @@ public class GetFileRequestAction extends AbstractRequestAction {
                 //
                 byte[] rev = new byte[2];
                 int revLen = in.read(rev);
-                GetFileResponse response = GetFileResponse.getGetFileResponse(GetFileResponse.RESPONSE_TYPE_NULL);
+                GetFileResponse response = GetFileResponse.getGetFileResponse(GetFileResponse.RESPONSE_TYPE_START_TRANSPORT);
                 response.parse(rev, 0, revLen);
                 if (response.canGetFile()) {
                     // 开始接收回复
@@ -80,11 +85,21 @@ public class GetFileRequestAction extends AbstractRequestAction {
                     // 写进行写到临时文件，然后再进行更换名字
                     String c = FilenameUtils.concat(Constant.getTransportReveivePath(), getRandomName());
                     FileUtils.forceMkdirParent(new File(c));
+                    GetFileResponse.StartTransportBody responseBody = (GetFileResponse.StartTransportBody)response.getBody();
+                    // 接收的文件大小
+                    long revFileLen = responseBody.getFileLen();
                     file = new File(c);
                     file.createNewFile();
                     LOGGER.info("start rev file from server");
                     long startTime = System.currentTimeMillis();
-                    FileUtils.copyInputStreamToFile(in, file);
+                    long count;
+                    int n;
+                    FileOutputStream output = FileUtils.openOutputStream(file);
+                    byte[] buffer = new byte[4096];
+                    for(count = 0L; -1 != (n = in.read(buffer)); count += (long)n) {
+                        output.write(buffer, 0, n);
+                    }
+                    //FileUtils.copyInputStreamToFile(in, file);
                     String rname = new String(request.getBody().toBytes(),"utf-8");
                     rname = FilenameUtils.getName(rname);
                     File r = new File(FilenameUtils.concat(Constant.TRANSPORTREVEIVEPATH, rname));

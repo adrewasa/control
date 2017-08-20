@@ -5,22 +5,11 @@ import com.asa.computer.transfer.Transport;
 /**
  * Created by andrew_asa on 2017/7/24.
  */
-public class ResponseBody implements Transport {
+public interface ResponseBody extends Transport {
 
     /**
-     * 列出的目录名 cmd-list-file
+     * 文件大小
+     * @return
      */
-    private String dirName;
-
-    @Override
-    public int parse(byte[] bytes, int start, int len) {
-
-        return 0;
-    }
-
-    @Override
-    public byte[] toBytes() {
-
-        return new byte[0];
-    }
+    int size();
 }
