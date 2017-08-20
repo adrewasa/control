@@ -8,6 +8,7 @@ import com.asa.utils.CommonUtil;
 import com.asa.utils.applet.ls.LsConstant;
 import com.asa.utils.applet.ls.LsNode;
 import com.asa.utils.data.StringUtils;
+import com.asa.utils.log.LoggerUtils;
 import com.asa.utils.ui.layout.ChangeLineFlowLayout;
 import org.apache.commons.io.FilenameUtils;
 
@@ -57,6 +58,12 @@ public class FileListAction implements ActionListener {
 
         this.jFrame = jFrame;
         client = new Client();
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // 每次动作都需要重新构建一遍，因为别的点击会删除contentPane里面的内容
         panel = new JPanel();
         scrollPane = new JScrollPane(panel);
         panel.setBackground(Color.white);
@@ -66,11 +73,6 @@ public class FileListAction implements ActionListener {
         // 重新进行绘制
         contentPane.removeAll();
         contentPane.add(scrollPane);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
         paint(getNodes(null));
     }
 
@@ -95,7 +97,7 @@ public class FileListAction implements ActionListener {
                 }
             }
         } catch (Exception e) {
-
+            LoggerUtils.getLogger(this.getClass()).info("error in get ls node",e);
         }
         return null;
     }
@@ -138,6 +140,7 @@ public class FileListAction implements ActionListener {
         button.setVerticalTextPosition(SwingConstants.BOTTOM);
         button.setPreferredSize(new Dimension(UIConstant.FILE_LIST_DISP_WIDTH, UIConstant.FILE_LIST_DISP_HEIGH));
         button.setBorderPainted(false);
+        button.setBackground(Color.white);
         // 点击事件
         button.addMouseListener(new MouseAdapter() {
 
@@ -180,6 +183,7 @@ public class FileListAction implements ActionListener {
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.BOTTOM);
         button.setPreferredSize(new Dimension(UIConstant.FILE_LIST_DISP_WIDTH, UIConstant.FILE_LIST_DISP_HEIGH));
+        button.setBackground(Color.white);
         button.setBorderPainted(false);
         // 点击事件
         button.addMouseListener(new MouseAdapter() {
@@ -212,9 +216,9 @@ public class FileListAction implements ActionListener {
                 JButton button = (JButton) e.getSource();
                 int witch = e.getButton();
                 if (witch == MouseEvent.BUTTON1) {
-                    System.out.println("left");
+                    //System.out.println("left");
                 } else if (witch == MouseEvent.BUTTON2) {
-                    System.out.println("middle");
+                    //System.out.println("middle");
                 } else if (witch == MouseEvent.BUTTON3) {
                     if (node.isFile()) {
                         JPopupMenu popupMenu = new JPopupMenu();
@@ -237,6 +241,4 @@ public class FileListAction implements ActionListener {
         });
         return button;
     }
-
-
 }

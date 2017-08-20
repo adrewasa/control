@@ -3,6 +3,9 @@ package com.asa.computer.ui.client;
 import com.asa.computer.transfer.client.Client;
 import com.asa.computer.transfer.client.RequestConstant;
 import com.asa.computer.ui.client.action.FileListAction;
+import com.asa.computer.ui.client.action.FindServer;
+import com.asa.computer.ui.client.action.ThemeSettingAction;
+import com.asa.computer.ui.client.action.TransportSettingAction;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -107,11 +110,16 @@ public class ClientUi {
         networkM.add(connectServerI);
         networkM.add(scanNet);
         menuBar.add(networkM);
+        findServerI.addActionListener(new FindServer(jFrame));
 
         JMenu settingM = new JMenu("设置");
         JMenuItem transportSetting = new JMenuItem("传输设置");
+        JMenuItem themeSetting = new JMenuItem("主题设置");
         settingM.add(transportSetting);
         menuBar.add(settingM);
+        menuBar.add(themeSetting);
+        transportSetting.addActionListener(new TransportSettingAction(jFrame));
+        themeSetting.addActionListener(new ThemeSettingAction(jFrame));
 
         JMenu helpM = new JMenu("帮助");
         JMenuItem updateI = new JMenuItem("更新服务器");
@@ -152,6 +160,7 @@ public class ClientUi {
 
         }
     }
+
     public static void main(String[] args) {
 
         ClientUi ui = new ClientUi();
