@@ -7,7 +7,7 @@ import com.asa.computer.transfer.Constant;
  */
 public class Client {
 
-    private String serverIp = Constant.LOCALHOSTADDR;
+    private String serverIp = "192.168.1.101";
 
     private int serverPort = Constant.SERVERPORT;
 

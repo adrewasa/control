@@ -89,6 +89,7 @@ public class FileListAction implements ActionListener {
                 LsNode lsNode = (LsNode) result.getResponse();
                 if (lsNode != null) {
                     currentDir = lsNode.getName();
+                    LoggerUtils.getLogger(this.getClass()).info("success ls {}",currentDir);
                     if (StringUtils.isEmpty(path)) {
                         // 根目录
                         rootDir = lsNode.getName();

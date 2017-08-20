@@ -20,7 +20,12 @@ public class Constant {
     /**
      * 数据缓冲区大小
      */
-    public static int DATABUFLEN = 1024 * 100;
+    public static int DATABUFLEN = 1024 * 1024;
+
+    /**
+     * 限定最大的ls数据 --- 防止别人有意的发送
+     */
+    public static int MAX_LS_DATA = 1024*1024;
 
     /**
      * 传输基路径
