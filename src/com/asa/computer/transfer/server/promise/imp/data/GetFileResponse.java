@@ -100,7 +100,7 @@ public class GetFileResponse implements Transport {
             }
             return body;
         }
-        return new NoneBodyResoponse();
+        return new NoneBodyResponse();
     }
 
     public ResponseBody getBody() {
@@ -188,7 +188,7 @@ public class GetFileResponse implements Transport {
             if (start + 4 > len) {
                 return start;
             }
-            fileLen = BytesUtils.byteArrayToLong(bytes, start, 4);
+            fileLen = BytesUtils.byteArrayToLong(bytes, start, 8);
             return 0;
         }
 
@@ -220,7 +220,7 @@ public class GetFileResponse implements Transport {
     /**
      * 表示没有
      */
-    public class NoneBodyResoponse implements ResponseBody {
+    public class NoneBodyResponse implements ResponseBody {
 
         @Override
         public int parse(byte[] bytes, int start, int len) {

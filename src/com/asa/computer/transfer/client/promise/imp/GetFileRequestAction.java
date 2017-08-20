@@ -73,7 +73,7 @@ public class GetFileRequestAction extends AbstractRequestAction {
                 out.write(request.toBytes());
                 in = socket.getInputStream();
                 //
-                byte[] rev = new byte[2];
+                byte[] rev = new byte[1024];
                 int revLen = in.read(rev);
                 GetFileResponse response = GetFileResponse.getGetFileResponse(GetFileResponse.RESPONSE_TYPE_START_TRANSPORT);
                 response.parse(rev, 0, revLen);
@@ -85,32 +85,45 @@ public class GetFileRequestAction extends AbstractRequestAction {
                     // 写进行写到临时文件，然后再进行更换名字
                     String c = FilenameUtils.concat(Constant.getTransportReveivePath(), getRandomName());
                     FileUtils.forceMkdirParent(new File(c));
-                    GetFileResponse.StartTransportBody responseBody = (GetFileResponse.StartTransportBody)response.getBody();
+                    GetFileResponse.StartTransportBody responseBody = (GetFileResponse.StartTransportBody) response.getBody();
                     // 接收的文件大小
                     long revFileLen = responseBody.getFileLen();
+                    LOGGER.info("start rev file from server, size {} kb", TransportUtils.fileSizeKb(revFileLen));
                     file = new File(c);
                     file.createNewFile();
-                    LOGGER.info("start rev file from server");
                     long startTime = System.currentTimeMillis();
                     long count;
                     int n;
                     FileOutputStream output = FileUtils.openOutputStream(file);
                     byte[] buffer = new byte[4096];
-                    for(count = 0L; -1 != (n = in.read(buffer)); count += (long)n) {
+                    long step = revFileLen/100;
+                    long sr = step;
+                    for (count = 0L; -1 != (n = in.read(buffer)); count += (long) n) {
                         output.write(buffer, 0, n);
+                        if (count > sr) {
+                            System.out.println(TransportUtils.revPercent(count,revFileLen)+"% have receive");
+                            sr+=step;
+                        }
                     }
+                    IOUtils.closeQuietly(out);
                     //FileUtils.copyInputStreamToFile(in, file);
-                    String rname = new String(request.getBody().toBytes(),"utf-8");
-                    rname = FilenameUtils.getName(rname);
-                    File r = new File(FilenameUtils.concat(Constant.TRANSPORTREVEIVEPATH, rname));
-                    if (r.exists()) {
-                        r = new File(FilenameUtils.concat(Constant.TRANSPORTREVEIVEPATH, getRandomName() + rname));
+                    long fsize = FileUtils.sizeOf(file);
+                    if (fsize == revFileLen) {
+                        // 传输的文件大小不对，说明传输过程出错了
+                        String rname = new String(request.getBody().toBytes(), "utf-8");
+                        rname = FilenameUtils.getName(rname);
+                        File r = new File(FilenameUtils.concat(Constant.TRANSPORTREVEIVEPATH, rname));
+                        if (r.exists()) {
+                            r = new File(FilenameUtils.concat(Constant.TRANSPORTREVEIVEPATH, getRandomName() + rname));
+                        }
+                        file.renameTo(r);
+                        long endTime = System.currentTimeMillis();
+                        ret.setStatus(RequestConstant.ACTION_RESULT_SUCCESS);
+                        LOGGER.info("receive {} kb cost {} second  rate {} mb/s  ", TransportUtils.fileSizeKb(fsize), TransportUtils.costSecond(startTime, endTime), TransportUtils.transportRateMb(startTime, endTime, fsize));
+                    } else {
+                        ret.setMessage("ile not same promise size");
+                        LOGGER.info("file not same size,promise size is {} byte，but really get {} byte", revFileLen, fsize);
                     }
-                    file.renameTo(r);
-                    long endTime = System.currentTimeMillis();
-                    long fsize = FileUtils.sizeOf(r);
-                    ret.setStatus(RequestConstant.ACTION_RESULT_SUCCESS);
-                    LOGGER.info("size {} kb cost {} second   rate {} mb/s  ", TransportUtils.fileSizeKb(fsize), TransportUtils.costSecond(startTime, endTime), TransportUtils.transportRateMb(startTime, endTime, fsize));
                 } else {
                     ret.setMessage(response.getDescription());
                 }
