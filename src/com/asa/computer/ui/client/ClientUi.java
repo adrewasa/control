@@ -113,19 +113,19 @@ public class ClientUi {
         findServerI.addActionListener(new FindServer(jFrame));
 
         JMenu settingM = new JMenu("设置");
+        menuBar.add(settingM);
         JMenuItem transportSetting = new JMenuItem("传输设置");
         JMenuItem themeSetting = new JMenuItem("主题设置");
         settingM.add(transportSetting);
-        menuBar.add(settingM);
-        menuBar.add(themeSetting);
+        settingM.add(themeSetting);
         transportSetting.addActionListener(new TransportSettingAction(jFrame));
         themeSetting.addActionListener(new ThemeSettingAction(jFrame));
 
         JMenu helpM = new JMenu("帮助");
-        JMenuItem updateI = new JMenuItem("更新服务器");
-        updateI.addActionListener(new UpdateServer());
-        helpM.add(updateI);
         menuBar.add(helpM);
+        JMenuItem updateI = new JMenuItem("更新服务器");
+        helpM.add(updateI);
+        updateI.addActionListener(new UpdateServer());
 
     }
 

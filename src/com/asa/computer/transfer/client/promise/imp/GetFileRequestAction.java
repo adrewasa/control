@@ -82,6 +82,7 @@ public class GetFileRequestAction extends AbstractRequestAction {
                     FileUtils.forceMkdirParent(new File(c));
                     file = new File(c);
                     file.createNewFile();
+                    LOGGER.info("start rev file from server");
                     long startTime = System.currentTimeMillis();
                     FileUtils.copyInputStreamToFile(in, file);
                     String rname = new String(request.getBody().toBytes(),"utf-8");
@@ -92,7 +93,6 @@ public class GetFileRequestAction extends AbstractRequestAction {
                     }
                     file.renameTo(r);
                     long endTime = System.currentTimeMillis();
-                    long fileLen = r.length();
                     long fsize = FileUtils.sizeOf(r);
                     ret.setStatus(RequestConstant.ACTION_RESULT_SUCCESS);
                     LOGGER.info("size {} kb cost {} second   rate {} mb/s  ", TransportUtils.fileSizeKb(fsize), TransportUtils.costSecond(startTime, endTime), TransportUtils.transportRateMb(startTime, endTime, fsize));
