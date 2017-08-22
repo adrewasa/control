@@ -25,7 +25,7 @@ import java.io.File;
  * Created by andrew_asa on 2017/8/19.
  * 传输相关设置
  */
-public class TransportSettingAction implements ActionListener {
+public class ClientTransportSettingAction implements ActionListener {
 
     private JFrame jFrame;
 
@@ -37,7 +37,7 @@ public class TransportSettingAction implements ActionListener {
 
     private JPanel netS;
 
-    public TransportSettingAction(JFrame jFrame, ClientUi clientUi) {
+    public ClientTransportSettingAction(JFrame jFrame, ClientUi clientUi) {
 
         this.jFrame = jFrame;
         this.clientUi = clientUi;

@@ -6,7 +6,7 @@ import com.asa.computer.ui.client.action.FileListAction;
 import com.asa.computer.ui.client.action.FindServer;
 import com.asa.computer.ui.client.action.ShutdownServerAction;
 import com.asa.computer.ui.client.action.ThemeSettingAction;
-import com.asa.computer.ui.client.action.TransportSettingAction;
+import com.asa.computer.ui.client.action.ClientTransportSettingAction;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -125,7 +125,7 @@ public class ClientUi {
         JMenuItem themeSetting = new JMenuItem("主题设置");
         settingM.add(transportSetting);
         settingM.add(themeSetting);
-        transportSetting.addActionListener(new TransportSettingAction(jFrame, this));
+        transportSetting.addActionListener(new ClientTransportSettingAction(jFrame, this));
         themeSetting.addActionListener(new ThemeSettingAction(jFrame));
 
         JMenu helpM = new JMenu("帮助");
