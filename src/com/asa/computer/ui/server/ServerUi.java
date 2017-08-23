@@ -1,7 +1,7 @@
 package com.asa.computer.ui.server;
 
 import com.asa.computer.transfer.server.Server;
-import com.asa.computer.ui.server.action.ServerTransportSetting;
+import com.asa.computer.ui.server.action.ServerTransportSettingAction;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -61,7 +61,7 @@ public class ServerUi {
         setting.add(transport);
         setting.addSeparator();
         setting.add(exit);
-        transport.addActionListener(new ServerTransportSetting(jFrame,this));
+        transport.addActionListener(new ServerTransportSettingAction(jFrame,this));
         exit.addActionListener(new ActionListener() {
 
             @Override
