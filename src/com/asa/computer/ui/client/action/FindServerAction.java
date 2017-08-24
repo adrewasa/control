@@ -9,11 +9,13 @@ import com.asa.utils.log.LoggerUtils;
 import com.asa.utils.net.IPUtils;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +27,7 @@ import java.util.List;
  * Created by asa on 2017/8/19.
  * 查找局域网中的服务器
  */
-public class FindServer implements ActionListener {
+public class FindServerAction implements ActionListener {
 
     private JFrame jFrame;
 
@@ -33,9 +35,11 @@ public class FindServer implements ActionListener {
 
     private JPanel jPanel;
 
+    private JScrollPane jScrollPane ;
+
     private boolean isScanning = false;
 
-    public FindServer(JFrame jFrame, ClientUi clientUi) {
+    public FindServerAction(JFrame jFrame, ClientUi clientUi) {
 
         this.jFrame = jFrame;
         this.clientUi = clientUi;
@@ -80,17 +84,26 @@ public class FindServer implements ActionListener {
             return;
         }
         jPanel = new JPanel();
-        jFrame.getContentPane().add(jPanel);
+        //jFrame.getContentPane().add(jPanel);
         JLabel label = new JLabel();
         label.setText("总共发现" + ns.size() + "台电脑，选择连接的电脑");
         jPanel.add(label);
-        jPanel.add(getIntroduceLabel());
+        Box vbox = Box.createVerticalBox();
+        JLabel info = getIntroduceLabel();
+        info.setMaximumSize(info.getPreferredSize());
+        vbox.add(info);
         for (NBResponseNode n : ns) {
             JLabel l = getLabel(n);
             TitledBorder tb = BorderFactory.createTitledBorder("");
             l.setBorder(tb);
-            jPanel.add(l);
+            l.setMaximumSize(l.getPreferredSize());
+            vbox.add(l);
+            //jPanel.add(l);
         }
+        jScrollPane = new JScrollPane(vbox);
+        //jPanel.setLayout(new ChangeLineFlowLayout(ChangeLineFlowLayout.LEFT));
+        jScrollPane.setBounds(100, 100, 100, 300);
+        jFrame.getContentPane().add(jScrollPane);
         jFrame.validate();
         jFrame.repaint();
     }
@@ -99,7 +112,7 @@ public class FindServer implements ActionListener {
 
         final NetBiosResponse biosResponse = node.getResponse();
         JLabel label = new JLabel(biosResponse.getFormatStr());
-        final FindServer self = this;
+        final FindServerAction self = this;
         label.addMouseListener(new MouseAdapter() {
 
             // 右击弹出框

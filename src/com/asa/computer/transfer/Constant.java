@@ -15,7 +15,7 @@ public class Constant {
     /**
      * 服务器默认地址
      */
-    public static String serverIp = "192.168.1.101";
+    public static String serverIp = "192.168.0.9";
 
     /**
      * 本地地址

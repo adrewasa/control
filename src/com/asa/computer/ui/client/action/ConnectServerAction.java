@@ -15,12 +15,12 @@ public class ConnectServerAction implements ActionListener {
 
     private NetBiosResponse node;
 
-    private FindServer findServer;
+    private FindServerAction findServerAction;
 
-    public ConnectServerAction(NetBiosResponse node, FindServer findServer) {
+    public ConnectServerAction(NetBiosResponse node, FindServerAction findServerAction) {
 
         this.node = node;
-        this.findServer = findServer;
+        this.findServerAction = findServerAction;
     }
 
     @Override

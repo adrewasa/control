@@ -2,11 +2,12 @@ package com.asa.computer.ui.client;
 
 import com.asa.computer.transfer.client.Client;
 import com.asa.computer.transfer.client.RequestConstant;
+import com.asa.computer.ui.client.action.ClientTransportSettingAction;
 import com.asa.computer.ui.client.action.FileListAction;
-import com.asa.computer.ui.client.action.FindServer;
+import com.asa.computer.ui.client.action.FindServerAction;
+import com.asa.computer.ui.client.action.ServerProjectionAction;
 import com.asa.computer.ui.client.action.ShutdownServerAction;
 import com.asa.computer.ui.client.action.ThemeSettingAction;
-import com.asa.computer.ui.client.action.ClientTransportSettingAction;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -63,7 +64,7 @@ public class ClientUi {
 
         JMenu fileM = new JMenu("文件");
         JMenuItem fileLI = new JMenuItem("文件列表");
-        fileLI.addActionListener(new FileListAction(jFrame,this));
+        fileLI.addActionListener(new FileListAction(jFrame, this));
         JMenuItem item2 = new JMenuItem("保存");
         JMenuItem item3 = new JMenuItem("另存为");
         JMenuItem exit = new JMenuItem("退出");
@@ -92,6 +93,7 @@ public class ClientUi {
 
         JMenu serverM = new JMenu("服务器");
         JMenuItem serverInfoI = new JMenuItem("服务器信息");
+        JMenuItem serverProjectionI = new JMenuItem("桌面");
         JMenuItem stopServerI = new JMenuItem("停止服务器");
         JMenuItem shutdownServerI = new JMenuItem("服务器关机");
         stopServerI.addActionListener(new ActionListener() {
@@ -104,7 +106,9 @@ public class ClientUi {
             }
         });
         shutdownServerI.addActionListener(new ShutdownServerAction(this));
+        serverProjectionI.addActionListener(new ServerProjectionAction(jFrame, this));
         serverM.add(serverInfoI);
+        serverM.add(serverProjectionI);
         serverM.add(stopServerI);
         serverM.add(shutdownServerI);
         menuBar.add(serverM);
@@ -117,7 +121,7 @@ public class ClientUi {
         networkM.add(connectServerI);
         networkM.add(scanNet);
         menuBar.add(networkM);
-        findServerI.addActionListener(new FindServer(jFrame, this));
+        findServerI.addActionListener(new FindServerAction(jFrame, this));
 
         JMenu settingM = new JMenu("设置");
         menuBar.add(settingM);
