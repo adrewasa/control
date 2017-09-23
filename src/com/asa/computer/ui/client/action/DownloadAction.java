@@ -30,7 +30,12 @@ public class DownloadAction implements ActionListener {
         // 参数不为空的时候才进行文件下载
         if (GeneralUtils.allNotNull(client, node)) {
             try {
-                client.actionCmd(RequestConstant.CMD_GET_FILE, node.getName());
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        client.actionCmd(RequestConstant.CMD_GET_FILE, node.getName());
+                    }
+                }).start();
             } catch (Exception e1) {
 
             }
