@@ -5,6 +5,7 @@ import com.asa.computer.transfer.client.RequestConstant;
 import com.asa.computer.ui.client.action.ClientTransportSettingAction;
 import com.asa.computer.ui.client.action.FileListAction;
 import com.asa.computer.ui.client.action.FindServerAction;
+import com.asa.computer.ui.client.action.ServerInfoAction;
 import com.asa.computer.ui.client.action.ServerProjectionAction;
 import com.asa.computer.ui.client.action.ShutdownServerAction;
 import com.asa.computer.ui.client.action.ThemeSettingAction;
@@ -93,6 +94,7 @@ public class ClientUi {
 
         JMenu serverM = new JMenu("服务器");
         JMenuItem serverInfoI = new JMenuItem("服务器信息");
+        serverInfoI.addActionListener(new ServerInfoAction(this));
         JMenuItem serverProjectionI = new JMenuItem("桌面");
         JMenuItem stopServerI = new JMenuItem("停止服务器");
         JMenuItem shutdownServerI = new JMenuItem("服务器关机");

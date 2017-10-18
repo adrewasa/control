@@ -43,5 +43,5 @@ out/**/**
 lib/**/**
 logs/**/**
 build.xml
-
-
+.gradle/**/*
+build/**/*
