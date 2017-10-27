@@ -1,10 +1,10 @@
 package com.asa.computer.transfer.client.promise.imp;
 
+import com.asa.base.io.IOUtils;
 import com.asa.computer.transfer.client.Request;
 import com.asa.computer.transfer.client.RequestActionResult;
 import com.asa.computer.transfer.client.RequestConstant;
 import com.asa.computer.transfer.client.RequestHeader;
-import com.asa.utils.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

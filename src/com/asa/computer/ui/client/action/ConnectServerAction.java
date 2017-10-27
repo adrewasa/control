@@ -1,8 +1,8 @@
 package com.asa.computer.ui.client.action;
 
+import com.asa.base.applet.btscan.NetBiosResponse;
+import com.asa.base.log.LoggerUtils;
 import com.asa.computer.transfer.Constant;
-import com.asa.utils.applet.btscan.NetBiosResponse;
-import com.asa.utils.log.LoggerUtils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -1,12 +1,12 @@
 package com.asa.computer.ui.client.action;
 
+import com.asa.base.applet.btscan.BTScan;
+import com.asa.base.applet.btscan.NBResponseNode;
+import com.asa.base.applet.btscan.NetBiosResponse;
+import com.asa.base.log.LoggerUtils;
+import com.asa.base.utils.data.list.ListUtils;
+import com.asa.base.utils.net.IPUtils;
 import com.asa.computer.ui.client.ClientUi;
-import com.asa.utils.CommonUtil;
-import com.asa.utils.applet.btscan.BTScan;
-import com.asa.utils.applet.btscan.NBResponseNode;
-import com.asa.utils.applet.btscan.NetBiosResponse;
-import com.asa.utils.log.LoggerUtils;
-import com.asa.utils.net.IPUtils;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -80,7 +80,7 @@ public class FindServerAction implements ActionListener {
 
         isScanning = false;
         LoggerUtils.getLogger(this.getClass()).info("end scan Local network server,{} server have found", ns.size());
-        if (CommonUtil.isEmptyList(ns)) {
+        if (ListUtils.isEmptyList(ns)) {
             return;
         }
         jPanel = new JPanel();

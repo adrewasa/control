@@ -1,9 +1,9 @@
 package com.asa.computer.ui.client.action;
 
+import com.asa.base.applet.ls.LsNode;
+import com.asa.base.utils.data.GeneralUtils;
 import com.asa.computer.transfer.client.Client;
 import com.asa.computer.transfer.client.RequestConstant;
-import com.asa.utils.applet.ls.LsNode;
-import com.asa.utils.data.GeneralUtils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

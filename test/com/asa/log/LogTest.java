@@ -1,6 +1,6 @@
 package com.asa.log;
 
-import com.asa.utils.log.LoggerUtils;
+import com.asa.base.log.LoggerUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 

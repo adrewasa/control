@@ -1,5 +1,9 @@
 package com.asa.computer.transfer.client.promise.imp;
 
+import com.asa.base.io.IOUtils;
+import com.asa.base.log.LoggerUtils;
+import com.asa.base.utils.data.GeneralUtils;
+import com.asa.base.utils.transport.TransportUtils;
 import com.asa.computer.transfer.Constant;
 import com.asa.computer.transfer.client.Request;
 import com.asa.computer.transfer.client.RequestActionResult;
@@ -7,10 +11,6 @@ import com.asa.computer.transfer.client.RequestBody;
 import com.asa.computer.transfer.client.RequestConstant;
 import com.asa.computer.transfer.client.RequestHeader;
 import com.asa.computer.transfer.server.promise.imp.data.GetFileResponse;
-import com.asa.utils.data.GeneralUtils;
-import com.asa.utils.io.IOUtils;
-import com.asa.utils.log.LoggerUtils;
-import com.asa.utils.transport.TransportUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;

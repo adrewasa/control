@@ -1,7 +1,7 @@
 package com.asa.computer.transfer.client;
 
+import com.asa.base.utils.data.bytes.BytesBuffer;
 import com.asa.computer.transfer.Transport;
-import com.asa.utils.data.bytes.BytesBuffer;
 
 /**
  * Created by andrew_asa on 2017/7/24.

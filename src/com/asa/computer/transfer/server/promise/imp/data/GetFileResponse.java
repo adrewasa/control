@@ -1,10 +1,10 @@
 package com.asa.computer.transfer.server.promise.imp.data;
 
+import com.asa.base.utils.data.ComparatorUtils;
+import com.asa.base.utils.data.bytes.BytesBuffer;
+import com.asa.base.utils.data.bytes.BytesUtils;
 import com.asa.computer.transfer.Transport;
 import com.asa.computer.transfer.server.ResponseBody;
-import com.asa.utils.data.ComparatorUtils;
-import com.asa.utils.data.bytes.BytesBuffer;
-import com.asa.utils.data.bytes.BytesUtils;
 
 /**
  * Created by andrew_asa on 2017/8/17.

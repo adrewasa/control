@@ -1,11 +1,11 @@
 package com.asa.computer.transfer.server;
 
+import com.asa.base.io.IOUtils;
+import com.asa.base.log.LoggerUtils;
+import com.asa.base.utils.net.IPUtils;
 import com.asa.computer.transfer.Constant;
 import com.asa.computer.transfer.client.Request;
 import com.asa.computer.transfer.client.RequestFactory;
-import com.asa.utils.io.IOUtils;
-import com.asa.utils.log.LoggerUtils;
-import com.asa.utils.net.IPUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +35,7 @@ public class Server implements Runnable {
                 initRequest(socket);
             }
         } catch (IOException e) {
-            LoggerUtils.getLogger().info("error get server sock",e);
+            LoggerUtils.getLogger().info("error get server sock", e);
         } finally {
             System.out.println("关闭服务");
             IOUtils.closeQuietly(stopServer);

@@ -1,5 +1,7 @@
 package com.asa.computer.transfer.server.promise.imp;
 
+import com.asa.base.io.IOUtils;
+import com.asa.base.utils.data.GeneralUtils;
 import com.asa.computer.transfer.client.Request;
 import com.asa.computer.transfer.client.RequestBody;
 import com.asa.computer.transfer.client.RequestConstant;
@@ -8,8 +10,6 @@ import com.asa.computer.transfer.server.ResponseActionResult;
 import com.asa.computer.transfer.server.ResponseConstant;
 import com.asa.computer.transfer.server.Server;
 import com.asa.computer.transfer.server.promise.imp.data.GetFileResponse;
-import com.asa.utils.data.GeneralUtils;
-import com.asa.utils.io.IOUtils;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

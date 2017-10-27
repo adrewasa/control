@@ -1,8 +1,8 @@
 package com.asa.computer.ui.client.action;
 
+import com.asa.base.applet.open.Open;
 import com.asa.computer.transfer.Constant;
 import com.asa.computer.ui.client.ClientUi;
-import com.asa.utils.applet.open.Open;
 
 import javax.swing.Box;
 import javax.swing.JButton;
