@@ -2,6 +2,7 @@ apply plugin: 'java'
 
 // 文件依赖
 dependencies {
+    compile project(":base")
     compile fileTree(dir: "..", include: 'lib/import/**/*.jar')
 }
 
