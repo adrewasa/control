@@ -4,10 +4,10 @@ import com.asa.computer.transfer.Constant;
 import com.asa.computer.transfer.client.Request;
 import com.asa.computer.transfer.client.RequestHeader;
 import com.asa.computer.transfer.server.promise.ResponseAction;
+import com.asa.computer.transfer.server.promise.imp.GetDirResponseAction;
 import com.asa.computer.transfer.server.promise.imp.GetFileResponseAction;
 import com.asa.computer.transfer.server.promise.imp.LsResponseAction;
 import com.asa.computer.transfer.server.promise.imp.StopServerResponseAction;
-
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
@@ -82,6 +82,7 @@ public class RequestActionFactory {
             isInit = true;
             regResponseAction(new LsResponseAction());
             regResponseAction(new GetFileResponseAction());
+            regResponseAction(new GetDirResponseAction());
             regResponseAction(new StopServerResponseAction());
         }
     }

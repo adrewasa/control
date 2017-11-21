@@ -1,12 +1,11 @@
 package com.asa.computer.transfer.server;
 
-import com.asa.base.io.IOUtils;
 import com.asa.base.log.LoggerUtils;
+import com.asa.base.utils.io.IOUtils;
 import com.asa.base.utils.net.IPUtils;
 import com.asa.computer.transfer.Constant;
 import com.asa.computer.transfer.client.Request;
 import com.asa.computer.transfer.client.RequestFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;

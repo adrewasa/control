@@ -25,7 +25,7 @@ public class DownloadAction implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)   {
+    public void actionPerformed(final ActionEvent e)   {
 
         // 参数不为空的时候才进行文件下载
         if (GeneralUtils.allNotNull(client, node)) {
@@ -33,7 +33,12 @@ public class DownloadAction implements ActionListener {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        client.actionCmd(RequestConstant.CMD_GET_FILE, node.getName());
+
+                        if (node.isFile()) {
+                            client.actionCmd(RequestConstant.CMD_GET_FILE, node.getName());
+                        } else if (node.isDir()) {
+                            client.actionCmd(RequestConstant.CMD_GET_DIR, node.getName());
+                        }
                     }
                 }).start();
             } catch (Exception e1) {

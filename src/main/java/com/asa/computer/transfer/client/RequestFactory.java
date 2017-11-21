@@ -1,6 +1,7 @@
 package com.asa.computer.transfer.client;
 
 import com.asa.computer.transfer.client.promise.RequestAction;
+import com.asa.computer.transfer.client.promise.imp.GetDirRequestAction;
 import com.asa.computer.transfer.client.promise.imp.GetFileRequestAction;
 import com.asa.computer.transfer.client.promise.imp.LsRequestAction;
 import com.asa.computer.transfer.client.promise.imp.ConnectServerRequestAction;
@@ -29,18 +30,14 @@ public class RequestFactory {
      * @param args 参数
      * @return
      */
-    public static Request getRequest(short cmd, Object... args) {
+    public static Request getRequest(short cmd, Object... args) throws Exception {
 
         Short key = new Short(cmd);
         RequestAction action = actionMap.get(key);
         if (action != null) {
-            try {
-                return action.getRequest(args);
-            } catch (Exception e) {
-
-            }
+            return action.getRequest(args);
         }
-        return null;
+        throw new NullPointerException("error in get request");
     }
 
     /**
@@ -105,6 +102,7 @@ public class RequestFactory {
             isInit = true;
             regRequestAction(new LsRequestAction());
             regRequestAction(new GetFileRequestAction());
+            regRequestAction(new GetDirRequestAction());
             regRequestAction(new StopServerRequestAction());
             regRequestAction(new ConnectServerRequestAction());
             regRequestAction(new ShutdownServerRequestAction());

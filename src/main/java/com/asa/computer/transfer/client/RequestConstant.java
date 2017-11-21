@@ -33,6 +33,11 @@ public class RequestConstant {
     public static short CMD_SERVER_START = 6;
 
     /**
+     * 获取整个文件夹
+     */
+    public static short CMD_GET_DIR = 7;
+
+    /**
      * 停止服务器
      */
     public static short CMD_STOPSERVER = 5;
@@ -68,4 +73,9 @@ public class RequestConstant {
      * 停止服务器响应
      */
     public static short ACTION_RESULT_STOP_SERVER = 2;
+
+    /**
+     * 构造参数错误
+     */
+    public static short CONSTRUCTOR_REQUEST_ERROR = 3;
 }

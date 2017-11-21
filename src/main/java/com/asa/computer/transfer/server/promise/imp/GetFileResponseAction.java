@@ -1,7 +1,7 @@
 package com.asa.computer.transfer.server.promise.imp;
 
-import com.asa.base.io.IOUtils;
 import com.asa.base.utils.data.GeneralUtils;
+import com.asa.base.utils.io.IOUtils;
 import com.asa.computer.transfer.client.Request;
 import com.asa.computer.transfer.client.RequestBody;
 import com.asa.computer.transfer.client.RequestConstant;
@@ -10,18 +10,17 @@ import com.asa.computer.transfer.server.ResponseActionResult;
 import com.asa.computer.transfer.server.ResponseConstant;
 import com.asa.computer.transfer.server.Server;
 import com.asa.computer.transfer.server.promise.imp.data.GetFileResponse;
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import org.apache.commons.io.FileUtils;
 
 /**
  * Created by andrew_asa on 2017/8/16.
  * 获取文件响应动作
  */
-public class GetFileResponseAction extends AbstractResponseAction {
+public class GetFileResponseAction extends BaseGetFileResponseAction {
 
     @Override
     public short getCmd() {
@@ -43,17 +42,17 @@ public class GetFileResponseAction extends AbstractResponseAction {
                 out = s.getOutputStream();
                 // 列出文件列表
                 if (header.getBodyLen() > 0) {
-                    String t = new String(bodyData, 0, header.getBodyLen());
+                    String fileName = new String(bodyData, 0, header.getBodyLen());
                     GetFileResponse response = null;
                     File send = null;
                     while (true) {
-                        if (!basePathCheck(t)) {
+                        if (!basePathCheck(fileName)) {
                             // 文件没有权限
                             response = GetFileResponse.getGetFileResponse(GetFileResponse.RESPONSE_TYPE_NO_POWER);
-                            ret.setMsg("unsafe file name:" + t);
+                            ret.setMsg("unsafe file name:" + fileName);
                             break;
                         }
-                        send = new File(t);
+                        send = new File(fileName);
                         // 文件不存在
                         if (!send.exists()) {
                             response = GetFileResponse.getGetFileResponse(GetFileResponse.RESPONSE_TYPE_HAVE_NO_FILE);

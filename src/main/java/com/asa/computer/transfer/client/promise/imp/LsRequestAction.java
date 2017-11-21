@@ -1,23 +1,21 @@
 package com.asa.computer.transfer.client.promise.imp;
 
 import com.asa.base.applet.ls.LsNode;
-import com.asa.base.io.IOUtils;
 import com.asa.base.log.LoggerUtils;
 import com.asa.base.utils.data.bytes.BytesBuffer;
+import com.asa.base.utils.io.IOUtils;
 import com.asa.computer.transfer.Constant;
 import com.asa.computer.transfer.client.Request;
 import com.asa.computer.transfer.client.RequestActionResult;
 import com.asa.computer.transfer.client.RequestBody;
 import com.asa.computer.transfer.client.RequestConstant;
 import com.asa.computer.transfer.client.RequestHeader;
-import org.slf4j.Logger;
-
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import org.slf4j.Logger;
 
 /**
  * Created by andrew_asa on 2017/8/16.
@@ -34,7 +32,7 @@ public class LsRequestAction extends AbstractRequestAction {
     }
 
     @Override
-    public Request getRequest(Object... args) throws UnsupportedEncodingException {
+    public Request getRequest(Object... args) throws Exception{
 
         Request ret = new Request();
         RequestHeader header = ret.getHeader();

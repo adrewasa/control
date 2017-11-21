@@ -3,8 +3,6 @@ package com.asa.computer.transfer.client.promise;
 import com.asa.computer.transfer.client.Request;
 import com.asa.computer.transfer.client.RequestActionResult;
 
-import java.io.UnsupportedEncodingException;
-
 /**
  * Created by andrew_asa on 2017/8/16.
  */
@@ -22,7 +20,7 @@ public interface RequestAction {
      *
      * @return
      */
-    Request getRequest(Object... args) throws UnsupportedEncodingException;
+    Request getRequest(Object... args) throws Exception;
 
     /**
      * 执行请求动作

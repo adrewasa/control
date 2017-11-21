@@ -77,6 +77,7 @@ public class FileListAction implements ActionListener {
         }
         currentLs = true;
         new Thread(new Runnable() {
+
             @Override
             public void run() {
 
@@ -243,13 +244,11 @@ public class FileListAction implements ActionListener {
                 } else if (witch == MouseEvent.BUTTON2) {
                     //System.out.println("middle");
                 } else if (witch == MouseEvent.BUTTON3) {
-                    if (node.isFile()) {
-                        JPopupMenu popupMenu = new JPopupMenu();
-                        JMenuItem download = new JMenuItem("下载");
-                        popupMenu.add(download);
-                        download.addActionListener(new DownloadAction(client, node));
-                        popupMenu.show(e.getComponent(), e.getX(), e.getY());
-                    }
+                    JPopupMenu popupMenu = new JPopupMenu();
+                    JMenuItem download = new JMenuItem("下载");
+                    popupMenu.add(download);
+                    download.addActionListener(new DownloadAction(client, node));
+                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
                 }
             }
 
